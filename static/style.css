@@ -127,3 +127,91 @@ h2 {
 #suggestions div:hover {
     background: #333;
 }
+
+@media (max-width: 400px) {
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+    }
+
+    #results {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-card {
+        min-height: 80px;
+    }
+}
+
+@media (max-width: 900px) {
+
+    body {
+        padding: 40px 20px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+
+    #results {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 30px 15px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .search-box {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+
+    .search-container {
+        width: 100%;
+    }
+
+    #movieInput {
+        width: 100%;
+        padding: 14px;
+        font-size: 15px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+    }
+
+    #results {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .movie-card {
+        min-height: 100px;
+        padding: 20px 10px;
+        font-size: 14px;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+}
