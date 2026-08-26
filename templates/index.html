@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movie Recommender</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🎬 Movie Recommender</h1>
+
+        <p class="subtitle">
+            Find movies similar to your favourites
+        </p>
+
+        <div class="search-box">
+
+            <div class="search-container">
+
+                <input
+                    type="text"
+                    id="movieInput"
+                    placeholder="Search for a movie..."
+                    autocomplete="off"
+                >
+
+                <div id="suggestions"></div>
+
+            </div>
+
+            <button onclick="getRecommendations()">
+                Recommend
+            </button>
+
+        </div>
+
+        <h2>Recommended Movies</h2>
+
+        <div id="results"></div>
+
+    </div>
+
+
+    <script>
+
+        let movies = [];
+
+        // Get movie list from Flask
+        async function loadMovies() {
+
+            const response = await fetch("/movies");
+
+            movies = await response.json();
+        }
+
+
+        // Show suggestions while typing
+        document
+            .getElementById("movieInput")
+            .addEventListener("input", function() {
+
+                const input =
+                    this.value.toLowerCase();
+
+                const suggestions =
+                    document.getElementById("suggestions");
+
+                suggestions.innerHTML = "";
+
+                if (input.length === 0) {
+                    return;
+                }
+
+                const matches = movies
+                    .filter(movie =>
+                        movie.toLowerCase().includes(input)
+                    )
+                    .slice(0, 8);
+
+
+                matches.forEach(movie => {
+
+                    const item =
+                        document.createElement("div");
+
+                    item.textContent = movie;
+
+                    item.onclick = function() {
+
+                        document.getElementById(
+                            "movieInput"
+                        ).value = movie;
+
+                        suggestions.innerHTML = "";
+                    };
+
+                    suggestions.appendChild(item);
+
+                });
+
+            });
+
+
+        // Get recommendations
+        async function getRecommendations() {
+
+            const movie =
+                document.getElementById("movieInput").value;
+
+            const response = await fetch("/recommend", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    movie: movie
+                })
+
+            });
+
+            const recommendations =
+                await response.json();
+
+            const results =
+                document.getElementById("results");
+
+            results.innerHTML = "";
+
+
+            recommendations.forEach(function(movie) {
+
+                const card =
+                    document.createElement("div");
+
+                card.className = "movie-card";
+
+                card.textContent = movie;
+
+                results.appendChild(card);
+
+            });
+
+        }
+
+
+        // Load movies when page opens
+        loadMovies();
+
+    </script>
+
+</body>
+</html>
